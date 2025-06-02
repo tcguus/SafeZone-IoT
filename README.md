@@ -35,7 +35,7 @@ O projeto SAFEZONE é uma solução baseada em Internet das Coisas (IoT) que vis
 SafeZone-IoT/
 ├── images/
 │   ├── circuito-wokwi.png
-│   ├── dashboard-node-red.png
+│   ├── dashboard.png
 │   ├── fluxo-node-red.png
 │   └── serial-monitor.png
 ├── node-red/
