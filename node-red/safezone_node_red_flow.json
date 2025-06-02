@@ -1,0 +1,232 @@
+[
+  {
+    "id": "mqtt_in",
+    "type": "mqtt in",
+    "z": "flow1",
+    "name": "Receber Sensor",
+    "topic": "safezone/sensores/001",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "mqtt_broker",
+    "x": 100,
+    "y": 100,
+    "wires": [
+      [
+        "json_parse"
+      ]
+    ]
+  },
+  {
+    "id": "json_parse",
+    "type": "json",
+    "z": "flow1",
+    "name": "Converter JSON",
+    "property": "payload",
+    "action": "",
+    "pretty": false,
+    "x": 300,
+    "y": 100,
+    "wires": [
+      [
+        "debug",
+        "temp_function",
+        "umid_function",
+        "nivel_function",
+        "alerta_function"
+      ]
+    ]
+  },
+  {
+    "id": "debug",
+    "type": "debug",
+    "z": "flow1",
+    "name": "Ver dados recebidos",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "x": 520,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "temp_function",
+    "type": "function",
+    "z": "flow1",
+    "name": "Extrair Temperatura",
+    "func": "msg.payload = msg.payload.temperatura;\nreturn msg;",
+    "x": 520,
+    "y": 120,
+    "wires": [
+      [
+        "temp_gauge"
+      ]
+    ]
+  },
+  {
+    "id": "umid_function",
+    "type": "function",
+    "z": "flow1",
+    "name": "Extrair Umidade",
+    "func": "msg.payload = msg.payload.umidade;\nreturn msg;",
+    "x": 520,
+    "y": 180,
+    "wires": [
+      [
+        "umid_gauge"
+      ]
+    ]
+  },
+  {
+    "id": "nivel_function",
+    "type": "function",
+    "z": "flow1",
+    "name": "Extrair N\u00edvel do Rio",
+    "func": "msg.payload = msg.payload.nivel;\nreturn msg;",
+    "x": 520,
+    "y": 240,
+    "wires": [
+      [
+        "nivel_gauge"
+      ]
+    ]
+  },
+  {
+    "id": "alerta_function",
+    "type": "function",
+    "z": "flow1",
+    "name": "Verificar Alerta",
+    "func": "msg.payload = msg.payload.alerta ? \"\u26a0\ufe0f ALERTA ATIVO\" : \"\u2705 Seguro\";\nreturn msg;",
+    "x": 520,
+    "y": 300,
+    "wires": [
+      [
+        "alerta_text"
+      ]
+    ]
+  },
+  {
+    "id": "temp_gauge",
+    "type": "ui_gauge",
+    "z": "flow1",
+    "name": "Temperatura",
+    "group": "ui_group",
+    "order": 0,
+    "width": 6,
+    "height": 4,
+    "gtype": "gage",
+    "title": "Temperatura (\u00b0C)",
+    "label": "\u00b0C",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 100,
+    "x": 750,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "umid_gauge",
+    "type": "ui_gauge",
+    "z": "flow1",
+    "name": "Umidade",
+    "group": "ui_group",
+    "order": 1,
+    "width": 6,
+    "height": 4,
+    "gtype": "gage",
+    "title": "Umidade (%)",
+    "label": "%",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 100,
+    "x": 750,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "nivel_gauge",
+    "type": "ui_gauge",
+    "z": "flow1",
+    "name": "N\u00edvel do Rio",
+    "group": "ui_group",
+    "order": 2,
+    "width": 6,
+    "height": 4,
+    "gtype": "gage",
+    "title": "N\u00edvel do Rio (cm)",
+    "label": "cm",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 100,
+    "x": 750,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "alerta_text",
+    "type": "ui_text",
+    "z": "flow1",
+    "group": "ui_group_alerta",
+    "order": 3,
+    "width": 6,
+    "height": 2,
+    "name": "Status do Alerta",
+    "label": "Status",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 750,
+    "y": 300,
+    "wires": [],
+    "style": {
+      "color": "red",
+      "font-weight": "bold",
+      "font-size": "20px"
+    }
+  },
+  {
+    "id": "mqtt_broker",
+    "type": "mqtt-broker",
+    "name": "Broker MQTT",
+    "broker": "broker.hivemq.com",
+    "port": "1883",
+    "clientid": "",
+    "usetls": false,
+    "compatmode": false,
+    "keepalive": "60",
+    "cleansession": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthPayload": "",
+    "closeTopic": "",
+    "closePayload": "",
+    "willTopic": "",
+    "willQos": "0",
+    "willPayload": ""
+  },
+  {
+    "id": "ui_group",
+    "type": "ui_group",
+    "name": "Sensores",
+    "tab": "ui_tab",
+    "order": 1,
+    "disp": true,
+    "width": "6"
+  },
+  {
+    "id": "ui_tab",
+    "type": "ui_tab",
+    "name": "Painel SAFEZONE",
+    "icon": "warning",
+    "order": 1
+  },
+  {
+    "id": "ui_group_alerta",
+    "type": "ui_group",
+    "name": "Status do Alerta",
+    "tab": "ui_tab",
+    "order": 2,
+    "disp": true,
+    "width": "6"
+  }
+]
