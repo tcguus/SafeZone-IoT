@@ -145,7 +145,7 @@ SafeZone-IoT/
 ---
 
 ## Vídeo Pitch
-[Assitir no YouTube]()
+[Assitir no YouTube](https://www.youtube.com/watch?v=rr52OMIIDYU)
 
 ---
 
